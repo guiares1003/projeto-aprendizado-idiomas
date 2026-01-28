@@ -9,7 +9,7 @@ export const navItems = [
 ];
 
 export const NavigationLinks = ({ orientation }: { orientation?: "horizontal" | "vertical" }) => (
-  <nav className={clsx("flex gap-3", orientation === "vertical" ? "flex-col" : "justify-around")}> 
+  <nav className={clsx("flex gap-3", orientation === "vertical" ? "flex-col" : "justify-around")}>
     {navItems.map((item) => (
       <NavLink
         key={item.to}
@@ -17,7 +17,7 @@ export const NavigationLinks = ({ orientation }: { orientation?: "horizontal" | 
         className={({ isActive }) =>
           clsx(
             "rounded-lg px-3 py-2 text-sm font-semibold transition",
-            isActive ? "bg-brand text-white" : "text-slate-300 hover:bg-slate-800",
+            isActive ? "bg-brand text-white" : "text-slate-600 hover:bg-slate-100",
           )
         }
       >

@@ -37,7 +37,7 @@ const StudyPage = () => {
   if (!deck) {
     return (
       <Panel>
-        <p className="text-slate-300">Deck não encontrado.</p>
+        <p className="text-slate-600">Deck não encontrado.</p>
         <Button variant="secondary" onClick={() => navigate("/decks")}>Voltar</Button>
       </Panel>
     );
@@ -78,34 +78,34 @@ const StudyPage = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-semibold text-white">Study Session</h1>
-        <p className="text-slate-400">Deck: {deck.name}</p>
+        <h1 className="text-3xl font-semibold text-slate-900">Study Session</h1>
+        <p className="text-slate-600">Deck: {deck.name}</p>
       </div>
 
       <Panel>
         {total === 0 ? (
           <div className="space-y-3">
-            <h2 className="text-xl font-semibold text-white">Sem cards disponíveis</h2>
-            <p className="text-sm text-slate-400">
+            <h2 className="text-xl font-semibold text-slate-900">Sem cards disponíveis</h2>
+            <p className="text-sm text-slate-500">
               Não há cards vencidos ou novos neste deck no momento.
             </p>
           </div>
         ) : (
           <div className="space-y-6">
-            <div className="flex items-center justify-between text-sm text-slate-300">
+            <div className="flex items-center justify-between text-sm text-slate-500">
               <span>
                 {currentIndex + 1}/{total}
               </span>
               <span>{deck.language}</span>
             </div>
             <Progress value={currentIndex + 1} max={total} />
-            <div className="rounded-2xl border border-panel-border bg-panel-light p-6 text-center">
-              <p className="text-2xl font-semibold text-white">{current?.front}</p>
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center">
+              <p className="text-2xl font-semibold text-slate-900">{current?.front}</p>
               {showBack && (
-                <div className="mt-4 space-y-2 text-sm text-slate-200">
-                  <p className="text-lg font-semibold">{current?.back}</p>
+                <div className="mt-4 space-y-2 text-sm text-slate-700">
+                  <p className="text-lg font-semibold text-slate-900">{current?.back}</p>
                   {current?.romanization && <p>{current.romanization}</p>}
-                  {current?.example && <p className="text-slate-400">{current.example}</p>}
+                  {current?.example && <p className="text-slate-500">{current.example}</p>}
                 </div>
               )}
             </div>
@@ -136,8 +136,8 @@ const StudyPage = () => {
       </Panel>
 
       <Panel>
-        <h2 className="text-lg font-semibold text-white">Sessão rápida</h2>
-        <p className="text-sm text-slate-400">Pressione 1-4 no teclado após revelar o verso.</p>
+        <h2 className="text-lg font-semibold text-slate-900">Sessão rápida</h2>
+        <p className="text-sm text-slate-500">Pressione 1-4 no teclado após revelar o verso.</p>
         <div className="mt-4 flex gap-3">
           <Button variant="secondary" onClick={() => navigate(`/decks/${deck.id}`)}>
             Voltar ao deck

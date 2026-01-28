@@ -52,7 +52,7 @@ const LoginPage = () => {
         <Button type="submit" className="w-full">
           Entrar
         </Button>
-        <p className="text-center text-sm text-slate-400">
+        <p className="text-center text-sm text-slate-500">
           Ainda não tem conta?{" "}
           <Link className="text-indigo-300 hover:text-indigo-200" to="/auth/register">
             Criar conta

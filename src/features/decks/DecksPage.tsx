@@ -19,8 +19,8 @@ const DecksPage = () => {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-white">Decks</h1>
-          <p className="text-slate-400">Organize seus decks por idioma e tema.</p>
+          <h1 className="text-3xl font-semibold text-slate-900">Decks</h1>
+          <p className="text-slate-600">Organize seus decks por idioma e tema.</p>
         </div>
         <Button asChild>
           <Link to="/decks/new">Novo deck</Link>
@@ -35,11 +35,11 @@ const DecksPage = () => {
             <Panel key={deck.id} className="flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold text-white">{deck.name}</h2>
+                  <h2 className="text-xl font-semibold text-slate-900">{deck.name}</h2>
                   <Badge label={deck.language} tone="info" />
                 </div>
-                {deck.description && <p className="text-sm text-slate-300">{deck.description}</p>}
-                <div className="flex flex-wrap gap-3 text-sm text-slate-400">
+                {deck.description && <p className="text-sm text-slate-600">{deck.description}</p>}
+                <div className="flex flex-wrap gap-3 text-sm text-slate-500">
                   <span>{deckCards.length} cards</span>
                   <span>{due} vencidos</span>
                 </div>

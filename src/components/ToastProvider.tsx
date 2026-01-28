@@ -39,9 +39,9 @@ const useToastStore = create<ToastStore>((set) => ({
 export const useToast = () => useToastStore();
 
 const toneStyles: Record<ToastTone, string> = {
-  success: "bg-emerald-500/90 text-white",
-  error: "bg-red-500/90 text-white",
-  info: "bg-slate-800 text-slate-100",
+  success: "bg-emerald-600 text-white",
+  error: "bg-red-500 text-white",
+  info: "bg-slate-900 text-white",
 };
 
 const ToastProvider = ({ children }: { children: ReactNode }) => {

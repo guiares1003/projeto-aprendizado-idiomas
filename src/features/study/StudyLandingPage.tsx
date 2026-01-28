@@ -17,8 +17,8 @@ const StudyLandingPage = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-semibold text-white">Study</h1>
-        <p className="text-slate-400">Escolha um deck para iniciar sua sessão.</p>
+        <h1 className="text-3xl font-semibold text-slate-900">Study</h1>
+        <p className="text-slate-600">Escolha um deck para iniciar sua sessão.</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -28,9 +28,9 @@ const StudyLandingPage = () => {
           return (
             <Panel key={deck.id} className="flex flex-col justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-white">{deck.name}</h2>
-                <p className="text-sm text-slate-400">{deckCards.length} cards</p>
-                <p className="text-sm text-slate-400">{dueCount} vencidos hoje</p>
+                <h2 className="text-xl font-semibold text-slate-900">{deck.name}</h2>
+                <p className="text-sm text-slate-500">{deckCards.length} cards</p>
+                <p className="text-sm text-slate-500">{dueCount} vencidos hoje</p>
               </div>
               <Button variant="primary" asChild className="mt-4">
                 <Link to={`/study/${deck.id}`}>Iniciar estudo</Link>
