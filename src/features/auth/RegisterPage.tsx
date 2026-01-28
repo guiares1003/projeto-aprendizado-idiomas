@@ -57,7 +57,7 @@ const RegisterPage = () => {
         <Button type="submit" className="w-full">
           Criar conta
         </Button>
-        <p className="text-center text-sm text-slate-500">
+        <p className="text-center text-sm text-slate-400">
           Já tem conta?{" "}
           <Link className="text-indigo-300 hover:text-indigo-200" to="/auth/login">
             Fazer login

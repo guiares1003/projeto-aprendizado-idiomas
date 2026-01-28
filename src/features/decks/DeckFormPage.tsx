@@ -26,20 +26,20 @@ const DeckFormPage = () => {
   return (
     <div className="max-w-2xl space-y-6">
       <div>
-        <h1 className="text-3xl font-semibold text-slate-900">Novo deck</h1>
-        <p className="text-slate-600">Crie um deck para organizar seus cartões.</p>
+        <h1 className="text-3xl font-semibold text-white">Novo deck</h1>
+        <p className="text-slate-400">Crie um deck para organizar seus cartões.</p>
       </div>
 
       <Panel>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Nome do deck</label>
+            <label className="text-sm font-semibold text-slate-200">Nome do deck</label>
             <Input value={name} onChange={(event) => setName(event.target.value)} required />
           </div>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Idioma</label>
+            <label className="text-sm font-semibold text-slate-200">Idioma</label>
             <select
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm"
+              className="w-full rounded-lg border border-panel-border bg-panel-light px-3 py-2 text-sm"
               value={language}
               onChange={(event) => setLanguage(event.target.value as LanguageCode)}
             >
@@ -50,7 +50,7 @@ const DeckFormPage = () => {
             </select>
           </div>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Descrição</label>
+            <label className="text-sm font-semibold text-slate-200">Descrição</label>
             <Textarea
               rows={3}
               value={description}

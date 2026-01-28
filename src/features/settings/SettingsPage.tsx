@@ -66,13 +66,13 @@ const SettingsPage = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-semibold text-slate-900">Settings</h1>
-        <p className="text-slate-600">Configure metas e gerencie seus dados.</p>
+        <h1 className="text-3xl font-semibold text-white">Settings</h1>
+        <p className="text-slate-400">Configure metas e gerencie seus dados.</p>
       </div>
 
       <Panel>
-        <h2 className="text-xl font-semibold text-slate-900">Meta diária</h2>
-        <p className="text-sm text-slate-500">Defina quantos cards revisar por dia.</p>
+        <h2 className="text-xl font-semibold text-white">Meta diária</h2>
+        <p className="text-sm text-slate-400">Defina quantos cards revisar por dia.</p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
           <Input
             type="number"
@@ -87,8 +87,8 @@ const SettingsPage = () => {
       </Panel>
 
       <Panel>
-        <h2 className="text-xl font-semibold text-slate-900">Importar / Exportar</h2>
-        <p className="text-sm text-slate-500">Salve seus decks em JSON ou restaure dados.</p>
+        <h2 className="text-xl font-semibold text-white">Importar / Exportar</h2>
+        <p className="text-sm text-slate-400">Salve seus decks em JSON ou restaure dados.</p>
         <div className="mt-4 flex flex-col gap-4">
           <div className="flex flex-wrap gap-3">
             <Button variant="primary" onClick={handleExport}>
@@ -111,9 +111,9 @@ const SettingsPage = () => {
             />
           </div>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Modo de importação</label>
+            <label className="text-sm font-semibold text-slate-200">Modo de importação</label>
             <select
-              className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm"
+              className="mt-2 w-full rounded-lg border border-panel-border bg-panel-light px-3 py-2 text-sm"
               value={mode}
               onChange={(event) => setMode(event.target.value as "merge" | "replace")}
             >

@@ -74,8 +74,8 @@ const DashboardPage = () => {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-slate-900">Dashboard</h1>
-          <p className="text-slate-600">Seu progresso diário em PolyTrack.</p>
+          <h1 className="text-3xl font-semibold text-white">Dashboard</h1>
+          <p className="text-slate-400">Seu progresso diário em PolyTrack.</p>
         </div>
         <Button variant="primary" asChild>
           <Link to="/study">Iniciar estudo</Link>
@@ -84,44 +84,43 @@ const DashboardPage = () => {
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         <Panel>
-          <p className="text-sm text-slate-500">Total de decks</p>
-          <p className="mt-2 text-3xl font-semibold text-slate-900">{decks.length}</p>
+          <p className="text-sm text-slate-400">Total de decks</p>
+          <p className="mt-2 text-3xl font-semibold text-white">{decks.length}</p>
         </Panel>
         <Panel>
-          <p className="text-sm text-slate-500">Vencidos hoje</p>
-          <p className="mt-2 text-3xl font-semibold text-slate-900">{dueToday}</p>
+          <p className="text-sm text-slate-400">Vencidos hoje</p>
+          <p className="mt-2 text-3xl font-semibold text-white">{dueToday}</p>
         </Panel>
         <Panel>
-          <p className="text-sm text-slate-500">Reviews hoje</p>
-          <p className="mt-2 text-3xl font-semibold text-slate-900">{reviewsToday}</p>
+          <p className="text-sm text-slate-400">Reviews hoje</p>
+          <p className="mt-2 text-3xl font-semibold text-white">{reviewsToday}</p>
         </Panel>
         <Panel>
-          <p className="text-sm text-slate-500">Streak</p>
-          <p className="mt-2 text-3xl font-semibold text-slate-900">{streak} dias</p>
+          <p className="text-sm text-slate-400">Streak</p>
+          <p className="mt-2 text-3xl font-semibold text-white">{streak} dias</p>
         </Panel>
       </div>
 
       <Panel>
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-slate-900">Reviews últimos 14 dias</h2>
-            <p className="text-sm text-slate-500">Meta diária: {settings.dailyGoal} cards</p>
+            <h2 className="text-xl font-semibold text-white">Reviews últimos 14 dias</h2>
+            <p className="text-sm text-slate-400">Meta diária: {settings.dailyGoal} cards</p>
           </div>
         </div>
         <div className="mt-6 h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
-              <XAxis dataKey="date" stroke="#64748b" />
-              <YAxis stroke="#64748b" allowDecimals={false} />
+              <XAxis dataKey="date" stroke="#94a3b8" />
+              <YAxis stroke="#94a3b8" allowDecimals={false} />
               <Tooltip
                 contentStyle={{
-                  background: "#ffffff",
-                  border: "1px solid #e2e8f0",
+                  background: "#111827",
+                  border: "1px solid #374151",
                   borderRadius: 12,
-                  color: "#0f172a",
                 }}
               />
-              <Line type="monotone" dataKey="reviews" stroke="#4f46e5" strokeWidth={2} />
+              <Line type="monotone" dataKey="reviews" stroke="#6366f1" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -130,8 +129,8 @@ const DashboardPage = () => {
       <Panel>
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-slate-900">Top decks (7 dias)</h2>
-            <p className="text-sm text-slate-500">Decks mais revisados recentemente.</p>
+            <h2 className="text-xl font-semibold text-white">Top decks (7 dias)</h2>
+            <p className="text-sm text-slate-400">Decks mais revisados recentemente.</p>
           </div>
           <Button variant="secondary" asChild>
             <Link to="/decks">Ver decks</Link>
@@ -139,9 +138,9 @@ const DashboardPage = () => {
         </div>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           {topDecks.map(({ deck, count }) => (
-            <div key={deck.id} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <h3 className="text-lg font-semibold text-slate-900">{deck.name}</h3>
-              <p className="text-sm text-slate-500">{count} reviews</p>
+            <div key={deck.id} className="rounded-xl border border-panel-border bg-panel-light p-4">
+              <h3 className="text-lg font-semibold text-white">{deck.name}</h3>
+              <p className="text-sm text-slate-400">{count} reviews</p>
             </div>
           ))}
         </div>

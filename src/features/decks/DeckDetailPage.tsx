@@ -58,7 +58,7 @@ const DeckDetailPage = () => {
   if (!deck) {
     return (
       <Panel>
-        <p className="text-slate-600">Deck não encontrado.</p>
+        <p className="text-slate-300">Deck não encontrado.</p>
         <Button variant="secondary" onClick={() => navigate("/decks")}>Voltar</Button>
       </Panel>
     );
@@ -121,10 +121,10 @@ const DeckDetailPage = () => {
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-semibold text-slate-900">{deck.name}</h1>
+            <h1 className="text-3xl font-semibold text-white">{deck.name}</h1>
             <Badge label={deck.language} tone="info" />
           </div>
-          <p className="text-slate-600">Gerencie cards e ajustes do deck.</p>
+          <p className="text-slate-400">Gerencie cards e ajustes do deck.</p>
         </div>
         <div className="flex gap-3">
           <Button variant="secondary" asChild>
@@ -139,13 +139,13 @@ const DeckDetailPage = () => {
       <Panel>
         <form className="grid gap-4 md:grid-cols-3" onSubmit={handleDeckUpdate}>
           <div className="md:col-span-2">
-            <label className="text-sm font-semibold text-slate-700">Nome</label>
+            <label className="text-sm font-semibold text-slate-200">Nome</label>
             <Input value={name} onChange={(event) => setName(event.target.value)} required />
           </div>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Idioma</label>
+            <label className="text-sm font-semibold text-slate-200">Idioma</label>
             <select
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm"
+              className="w-full rounded-lg border border-panel-border bg-panel-light px-3 py-2 text-sm"
               value={language}
               onChange={(event) => setLanguage(event.target.value as LanguageCode)}
             >
@@ -156,7 +156,7 @@ const DeckDetailPage = () => {
             </select>
           </div>
           <div className="md:col-span-3">
-            <label className="text-sm font-semibold text-slate-700">Descrição</label>
+            <label className="text-sm font-semibold text-slate-200">Descrição</label>
             <Textarea value={description} onChange={(event) => setDescription(event.target.value)} rows={2} />
           </div>
           <div className="md:col-span-3 flex justify-end">
@@ -169,28 +169,28 @@ const DeckDetailPage = () => {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-xl font-semibold">Adicionar card</h2>
-            <p className="text-sm text-slate-600">Preencha frente, verso e detalhes extras.</p>
+            <p className="text-sm text-slate-400">Preencha frente, verso e detalhes extras.</p>
           </div>
         </div>
         <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={handleAddCard}>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Front</label>
+            <label className="text-sm font-semibold text-slate-200">Front</label>
             <Input value={front} onChange={(event) => setFront(event.target.value)} required />
           </div>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Back</label>
+            <label className="text-sm font-semibold text-slate-200">Back</label>
             <Input value={back} onChange={(event) => setBack(event.target.value)} required />
           </div>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Romanização</label>
+            <label className="text-sm font-semibold text-slate-200">Romanização</label>
             <Input value={romanization} onChange={(event) => setRomanization(event.target.value)} />
           </div>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Tags (separadas por vírgula)</label>
+            <label className="text-sm font-semibold text-slate-200">Tags (separadas por vírgula)</label>
             <Input value={tags} onChange={(event) => setTags(event.target.value)} />
           </div>
           <div className="md:col-span-2">
-            <label className="text-sm font-semibold text-slate-700">Exemplo</label>
+            <label className="text-sm font-semibold text-slate-200">Exemplo</label>
             <Textarea value={example} onChange={(event) => setExample(event.target.value)} rows={2} />
           </div>
           <div className="md:col-span-2 flex justify-end">
@@ -203,7 +203,7 @@ const DeckDetailPage = () => {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-xl font-semibold">Cards</h2>
-            <p className="text-sm text-slate-600">Pesquise por texto ou filtre por tags.</p>
+            <p className="text-sm text-slate-400">Pesquise por texto ou filtre por tags.</p>
           </div>
           <div className="flex gap-3">
             <Input
@@ -212,7 +212,7 @@ const DeckDetailPage = () => {
               onChange={(event) => setSearch(event.target.value)}
             />
             <select
-              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm"
+              className="rounded-lg border border-panel-border bg-panel-light px-3 py-2 text-sm"
               value={tagFilter}
               onChange={(event) => setTagFilter(event.target.value)}
             >
@@ -229,13 +229,13 @@ const DeckDetailPage = () => {
           {filteredCards.map((card) => (
             <div
               key={card.id}
-              className="rounded-xl border border-slate-200 bg-slate-50 p-4"
+              className="rounded-xl border border-panel-border bg-panel-light p-4"
             >
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-900">{card.front}</h3>
-                  <p className="text-sm text-slate-600">{card.back}</p>
-                  {card.romanization && <p className="text-xs text-slate-500">{card.romanization}</p>}
+                  <h3 className="text-lg font-semibold text-white">{card.front}</h3>
+                  <p className="text-sm text-slate-300">{card.back}</p>
+                  {card.romanization && <p className="text-xs text-slate-400">{card.romanization}</p>}
                 </div>
                 <div className="flex gap-2">
                   <Button variant="secondary" onClick={() => setEditingCard(card)}>
@@ -246,14 +246,14 @@ const DeckDetailPage = () => {
                   </Button>
                 </div>
               </div>
-              {card.example && <p className="mt-2 text-sm text-slate-500">{card.example}</p>}
+              {card.example && <p className="mt-2 text-sm text-slate-400">{card.example}</p>}
               <div className="mt-3 flex flex-wrap gap-2">
                 {card.tags?.map((tag) => <Badge key={tag} label={tag} />)}
               </div>
             </div>
           ))}
           {filteredCards.length === 0 && (
-            <p className="text-sm text-slate-500">Nenhum card encontrado.</p>
+            <p className="text-sm text-slate-400">Nenhum card encontrado.</p>
           )}
         </div>
       </Panel>
@@ -277,7 +277,7 @@ const DeckDetailPage = () => {
         {editingCard && (
           <div className="space-y-3">
             <div>
-              <label className="text-sm font-semibold text-slate-700">Front</label>
+              <label className="text-sm font-semibold text-slate-200">Front</label>
               <Input
                 value={editingCard.front}
                 onChange={(event) =>
@@ -286,14 +286,14 @@ const DeckDetailPage = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-slate-700">Back</label>
+              <label className="text-sm font-semibold text-slate-200">Back</label>
               <Input
                 value={editingCard.back}
                 onChange={(event) => setEditingCard({ ...editingCard, back: event.target.value })}
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-slate-700">Romanização</label>
+              <label className="text-sm font-semibold text-slate-200">Romanização</label>
               <Input
                 value={editingCard.romanization ?? ""}
                 onChange={(event) =>
@@ -302,7 +302,7 @@ const DeckDetailPage = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-slate-700">Tags</label>
+              <label className="text-sm font-semibold text-slate-200">Tags</label>
               <Input
                 value={(editingCard.tags ?? []).join(", ")}
                 onChange={(event) =>
@@ -317,7 +317,7 @@ const DeckDetailPage = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-slate-700">Exemplo</label>
+              <label className="text-sm font-semibold text-slate-200">Exemplo</label>
               <Textarea
                 rows={2}
                 value={editingCard.example ?? ""}

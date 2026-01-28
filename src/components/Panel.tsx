@@ -7,7 +7,7 @@ type PanelProps = {
 };
 
 const Panel = ({ children, className }: PanelProps) => (
-  <div className={clsx("rounded-2xl border border-slate-200 bg-white p-6 shadow-sm", className)}>
+  <div className={clsx("rounded-2xl border border-panel-border bg-panel p-6 shadow-lg", className)}>
     {children}
   </div>
 );
