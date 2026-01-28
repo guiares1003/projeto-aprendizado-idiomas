@@ -52,45 +52,37 @@ export const seedState = (version: number): AppState => {
     createCard(english.id, "Could you repeat?", "Pode repetir?", { example: "Could you repeat that, please?" }),
     createCard(japanese.id, "は", "tópico (wa)", {
       romanization: "wa",
-      example: "わたしは学生です。
-Watashi wa gakusei desu.",
+      example: "わたしは学生です。\nWatashi wa gakusei desu.",
       tags: ["partícula"],
     }),
     createCard(japanese.id, "が", "sujeito (ga)", {
       romanization: "ga",
-      example: "ねこが好きです。
-Neko ga suki desu.",
+      example: "ねこが好きです。\nNeko ga suki desu.",
       tags: ["partícula"],
     }),
     createCard(japanese.id, "を", "objeto direto (o)", {
       romanization: "o",
-      example: "パンを食べます。
-Pan o tabemasu.",
+      example: "パンを食べます。\nPan o tabemasu.",
     }),
     createCard(japanese.id, "に", "direção/tempo (ni)", {
       romanization: "ni",
-      example: "学校に行きます。
-Gakkou ni ikimasu.",
+      example: "学校に行きます。\nGakkou ni ikimasu.",
     }),
     createCard(japanese.id, "へ", "direção (e)", {
       romanization: "e",
-      example: "うちへ帰ります。
-Uchi e kaerimasu.",
+      example: "うちへ帰ります。\nUchi e kaerimasu.",
     }),
     createCard(japanese.id, "で", "local/ação (de)", {
       romanization: "de",
-      example: "カフェで勉強します。
-Kafe de benkyou shimasu.",
+      example: "カフェで勉強します。\nKafe de benkyou shimasu.",
     }),
     createCard(japanese.id, "と", "e/com (to)", {
       romanization: "to",
-      example: "友だちと話します。
-Tomodachi to hanashimasu.",
+      example: "友だちと話します。\nTomodachi to hanashimasu.",
     }),
     createCard(japanese.id, "も", "também (mo)", {
       romanization: "mo",
-      example: "私も行きます。
-Watashi mo ikimasu.",
+      example: "私も行きます。\nWatashi mo ikimasu.",
     }),
     createCard(korean.id, "ㄱ", "consoante g/k", {
       romanization: "g/k",

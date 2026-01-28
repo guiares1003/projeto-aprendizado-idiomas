@@ -13,8 +13,16 @@ const DeckDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const deck = useAppStore((state) => state.decks.find((item) => item.id === id));
-  const cards = useAppStore((state) => state.cards.filter((card) => card.deckId === id));
+  const deck = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    if (!activeId) return undefined;
+    return state.data[activeId]?.decks.find((item) => item.id === id);
+  });
+  const cards = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    if (!activeId) return [];
+    return state.data[activeId]?.cards.filter((card) => card.deckId === id) ?? [];
+  });
   const updateDeck = useAppStore((state) => state.updateDeck);
   const deleteDeck = useAppStore((state) => state.deleteDeck);
   const addCard = useAppStore((state) => state.addCard);

@@ -40,4 +40,7 @@ npm run format
 ```
 
 ## Dados locais
-Os dados são persistidos no `LocalStorage` com versão de schema. Ao primeiro carregamento, o app cria 4 decks de demonstração.
+Os dados são persistidos no `LocalStorage` com versão de schema. Ao primeiro cadastro, o app cria 4 decks de demonstração.
+
+## Login local
+O app possui cadastro e login locais (sem backend). Cada usuário mantém seus decks e revisões separados dentro do navegador.

@@ -2,11 +2,20 @@ import { create } from "zustand";
 import { addDays, formatDateKey, isDue, startOfDay } from "../lib/date";
 import { createId } from "../lib/id";
 import { loadState, saveState, STORAGE_VERSION } from "../lib/storage";
-import { AppState, Card, CardStats, DailyLog, Deck } from "../types";
+import { AppState, Card, CardStats, DailyLog, Deck, RootState } from "../types";
+import { User } from "../types/auth";
+import { hashPassword, normalizeEmail } from "../lib/auth";
+import { seedState } from "../lib/seed";
 
 export type ReviewRating = "again" | "hard" | "good" | "easy";
 
-type AppStore = AppState & {
+type AuthError = "email_taken" | "invalid_credentials" | "missing_fields";
+
+type AppStore = RootState & {
+  registerUser: (input: { name: string; email: string; password: string }) => AuthError | null;
+  loginUser: (input: { email: string; password: string }) => AuthError | null;
+  logout: () => void;
+  activeUser?: User;
   addDeck: (input: Omit<Deck, "id" | "createdAt">) => Deck;
   updateDeck: (id: string, updates: Partial<Omit<Deck, "id" | "createdAt">>) => void;
   deleteDeck: (id: string) => void;
@@ -91,27 +100,111 @@ const upsertDailyLog = (logs: DailyLog[], deckId: string): DailyLog[] => {
   });
 };
 
+const getActiveData = (state: RootState): AppState | null => {
+  const activeId = state.activeUserId;
+  if (!activeId) return null;
+  return state.data[activeId] ?? null;
+};
+
 export const useAppStore = create<AppStore>((set, get) => ({
   ...initialState,
+  activeUser: initialState.activeUserId
+    ? initialState.users.find((user) => user.id === initialState.activeUserId)
+    : undefined,
+  registerUser: ({ name, email, password }) => {
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      return "missing_fields";
+    }
+    const normalized = normalizeEmail(email);
+    const exists = get().users.some((user) => user.email === normalized);
+    if (exists) {
+      return "email_taken";
+    }
+    const user: User = {
+      id: createId(),
+      name: name.trim(),
+      email: normalized,
+      passwordHash: hashPassword(password),
+      createdAt: new Date().toISOString(),
+    };
+    const userState = seedState(STORAGE_VERSION);
+    set((state) => ({
+      users: [...state.users, user],
+      activeUserId: user.id,
+      activeUser: user,
+      data: { ...state.data, [user.id]: userState },
+    }));
+    return null;
+  },
+  loginUser: ({ email, password }) => {
+    if (!email.trim() || !password.trim()) {
+      return "missing_fields";
+    }
+    const normalized = normalizeEmail(email);
+    const user = get().users.find((item) => item.email === normalized);
+    if (!user || user.passwordHash !== hashPassword(password)) {
+      return "invalid_credentials";
+    }
+    set({ activeUserId: user.id, activeUser: user });
+    return null;
+  },
+  logout: () => {
+    set({ activeUserId: undefined, activeUser: undefined });
+  },
   addDeck: (input) => {
     const deck: Deck = {
       id: createId(),
       createdAt: new Date().toISOString(),
       ...input,
     };
-    set((state) => ({ decks: [...state.decks, deck] }));
+    set((state) => {
+      const activeId = state.activeUserId;
+      if (!activeId) return state;
+      const activeData = state.data[activeId];
+      return {
+        data: {
+          ...state.data,
+          [activeId]: {
+            ...activeData,
+            decks: [...activeData.decks, deck],
+          },
+        },
+      };
+    });
     return deck;
   },
   updateDeck: (id, updates) => {
-    set((state) => ({
-      decks: state.decks.map((deck) => (deck.id === id ? { ...deck, ...updates } : deck)),
-    }));
+    set((state) => {
+      const activeId = state.activeUserId;
+      if (!activeId) return state;
+      const activeData = state.data[activeId];
+      return {
+        data: {
+          ...state.data,
+          [activeId]: {
+            ...activeData,
+            decks: activeData.decks.map((deck) => (deck.id === id ? { ...deck, ...updates } : deck)),
+          },
+        },
+      };
+    });
   },
   deleteDeck: (id) => {
-    set((state) => ({
-      decks: state.decks.filter((deck) => deck.id !== id),
-      cards: state.cards.filter((card) => card.deckId !== id),
-    }));
+    set((state) => {
+      const activeId = state.activeUserId;
+      if (!activeId) return state;
+      const activeData = state.data[activeId];
+      return {
+        data: {
+          ...state.data,
+          [activeId]: {
+            ...activeData,
+            decks: activeData.decks.filter((deck) => deck.id !== id),
+            cards: activeData.cards.filter((card) => card.deckId !== id),
+          },
+        },
+      };
+    });
   },
   addCard: (input) => {
     const card: Card = {
@@ -120,65 +213,138 @@ export const useAppStore = create<AppStore>((set, get) => ({
       stats: defaultStats(),
       ...input,
     };
-    set((state) => ({ cards: [...state.cards, card] }));
+    set((state) => {
+      const activeId = state.activeUserId;
+      if (!activeId) return state;
+      const activeData = state.data[activeId];
+      return {
+        data: {
+          ...state.data,
+          [activeId]: {
+            ...activeData,
+            cards: [...activeData.cards, card],
+          },
+        },
+      };
+    });
     return card;
   },
   updateCard: (id, updates) => {
-    set((state) => ({
-      cards: state.cards.map((card) => (card.id === id ? { ...card, ...updates } : card)),
-    }));
+    set((state) => {
+      const activeId = state.activeUserId;
+      if (!activeId) return state;
+      const activeData = state.data[activeId];
+      return {
+        data: {
+          ...state.data,
+          [activeId]: {
+            ...activeData,
+            cards: activeData.cards.map((card) => (card.id === id ? { ...card, ...updates } : card)),
+          },
+        },
+      };
+    });
   },
   deleteCard: (id) => {
-    set((state) => ({ cards: state.cards.filter((card) => card.id !== id) }));
+    set((state) => {
+      const activeId = state.activeUserId;
+      if (!activeId) return state;
+      const activeData = state.data[activeId];
+      return {
+        data: {
+          ...state.data,
+          [activeId]: {
+            ...activeData,
+            cards: activeData.cards.filter((card) => card.id !== id),
+          },
+        },
+      };
+    });
   },
   reviewCard: (id, rating) => {
-    const card = get().cards.find((item) => item.id === id);
-    if (!card) return;
-    const updated = applyReview(card.stats, rating);
-    set((state) => ({
-      cards: state.cards.map((item) => (item.id === id ? { ...item, stats: updated } : item)),
-      dailyLogs: upsertDailyLog(state.dailyLogs, card.deckId),
-    }));
+    set((state) => {
+      const activeId = state.activeUserId;
+      if (!activeId) return state;
+      const activeData = state.data[activeId];
+      const card = activeData.cards.find((item) => item.id === id);
+      if (!card) return state;
+      const updated = applyReview(card.stats, rating);
+      return {
+        data: {
+          ...state.data,
+          [activeId]: {
+            ...activeData,
+            cards: activeData.cards.map((item) => (item.id === id ? { ...item, stats: updated } : item)),
+            dailyLogs: upsertDailyLog(activeData.dailyLogs, card.deckId),
+          },
+        },
+      };
+    });
   },
   setDailyGoal: (goal) => {
-    set((state) => ({
-      settings: {
-        ...state.settings,
-        dailyGoal: goal,
-      },
-    }));
+    set((state) => {
+      const activeId = state.activeUserId;
+      if (!activeId) return state;
+      const activeData = state.data[activeId];
+      return {
+        data: {
+          ...state.data,
+          [activeId]: {
+            ...activeData,
+            settings: {
+              ...activeData.settings,
+              dailyGoal: goal,
+            },
+          },
+        },
+      };
+    });
   },
-  importState: (state, mode) => {
-    if (mode === "replace") {
-      set({
-        ...state,
-        version: STORAGE_VERSION,
-      });
-      return;
-    }
-    set((current) => ({
-      version: STORAGE_VERSION,
-      decks: [...current.decks, ...state.decks],
-      cards: [...current.cards, ...state.cards],
-      settings: { ...current.settings, ...state.settings },
-      dailyLogs: [...current.dailyLogs, ...state.dailyLogs],
-    }));
+  importState: (stateData, mode) => {
+    set((state) => {
+      const activeId = state.activeUserId;
+      if (!activeId) return state;
+      const activeData = state.data[activeId];
+      if (mode === "replace") {
+        return {
+          data: {
+            ...state.data,
+            [activeId]: { ...stateData, version: STORAGE_VERSION },
+          },
+        };
+      }
+      return {
+        data: {
+          ...state.data,
+          [activeId]: {
+            version: STORAGE_VERSION,
+            decks: [...activeData.decks, ...stateData.decks],
+            cards: [...activeData.cards, ...stateData.cards],
+            settings: { ...activeData.settings, ...stateData.settings },
+            dailyLogs: [...activeData.dailyLogs, ...stateData.dailyLogs],
+          },
+        },
+      };
+    });
   },
   getDueCards: (deckId) => {
-    return get().cards.filter((card) => card.deckId === deckId && isDue(card.stats.dueDate));
+    const active = getActiveData(get());
+    if (!active) return [];
+    return active.cards.filter((card) => card.deckId === deckId && isDue(card.stats.dueDate));
   },
   getNewCards: (deckId) => {
-    return get().cards.filter((card) => card.deckId === deckId && card.stats.repetitions === 0);
+    const active = getActiveData(get());
+    if (!active) return [];
+    return active.cards.filter((card) => card.deckId === deckId && card.stats.repetitions === 0);
   },
 }));
 
 useAppStore.subscribe((state) => {
-  const persisted: AppState = {
+  const persisted: RootState = {
     version: state.version,
-    decks: state.decks,
-    cards: state.cards,
-    settings: state.settings,
-    dailyLogs: state.dailyLogs,
+    users: state.users,
+    activeUserId: state.activeUserId,
+    data: state.data,
   };
   saveState(persisted);
 });

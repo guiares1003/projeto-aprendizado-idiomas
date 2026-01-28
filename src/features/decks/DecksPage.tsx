@@ -6,8 +6,14 @@ import { useAppStore } from "../../store/useAppStore";
 import { isDue } from "../../lib/date";
 
 const DecksPage = () => {
-  const decks = useAppStore((state) => state.decks);
-  const cards = useAppStore((state) => state.cards);
+  const decks = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    return activeId ? state.data[activeId]?.decks ?? [] : [];
+  });
+  const cards = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    return activeId ? state.data[activeId]?.cards ?? [] : [];
+  });
 
   return (
     <div className="space-y-6">

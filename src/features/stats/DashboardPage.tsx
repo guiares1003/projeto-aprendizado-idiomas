@@ -6,10 +6,22 @@ import { useAppStore } from "../../store/useAppStore";
 import { addDays, formatDateKey, isDue, startOfDay } from "../../lib/date";
 
 const DashboardPage = () => {
-  const decks = useAppStore((state) => state.decks);
-  const cards = useAppStore((state) => state.cards);
-  const dailyLogs = useAppStore((state) => state.dailyLogs);
-  const settings = useAppStore((state) => state.settings);
+  const decks = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    return activeId ? state.data[activeId]?.decks ?? [] : [];
+  });
+  const cards = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    return activeId ? state.data[activeId]?.cards ?? [] : [];
+  });
+  const dailyLogs = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    return activeId ? state.data[activeId]?.dailyLogs ?? [] : [];
+  });
+  const settings = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    return activeId ? state.data[activeId]?.settings : { dailyGoal: 20 };
+  });
 
   const dueToday = cards.filter((card) => isDue(card.stats.dueDate)).length;
   const todayKey = formatDateKey(new Date());

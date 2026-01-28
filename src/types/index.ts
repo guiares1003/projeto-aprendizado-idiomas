@@ -1,3 +1,5 @@
+import type { User } from "./auth";
+
 export type LanguageCode = "EN" | "JA" | "KO" | "ZH";
 
 export type Deck = {
@@ -45,4 +47,11 @@ export type AppState = {
   cards: Card[];
   settings: Settings;
   dailyLogs: DailyLog[];
+};
+
+export type RootState = {
+  version: number;
+  users: User[];
+  activeUserId?: string;
+  data: Record<string, AppState>;
 };

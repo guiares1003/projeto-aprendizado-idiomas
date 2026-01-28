@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/Button";
 import Panel from "../../components/Panel";
@@ -9,18 +9,22 @@ import { useToast } from "../../components/ToastProvider";
 const StudyPage = () => {
   const { deckId } = useParams();
   const navigate = useNavigate();
-  const deck = useAppStore((state) => state.decks.find((item) => item.id === deckId));
+  const deck = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    if (!activeId) return undefined;
+    return state.data[activeId]?.decks.find((item) => item.id === deckId);
+  });
   const getDueCards = useAppStore((state) => state.getDueCards);
   const getNewCards = useAppStore((state) => state.getNewCards);
   const reviewCard = useAppStore((state) => state.reviewCard);
   const { addToast } = useToast();
 
-  const sessionCards = useMemo(() => {
+  const sessionCards = useAppStore((state) => {
     if (!deckId) return [];
-    const due = getDueCards(deckId);
+    const due = state.getDueCards(deckId);
     if (due.length > 0) return due;
-    return getNewCards(deckId);
-  }, [deckId, getDueCards, getNewCards]);
+    return state.getNewCards(deckId);
+  });
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showBack, setShowBack] = useState(false);

@@ -9,20 +9,30 @@ import { AppState } from "../../types";
 
 const SettingsPage = () => {
   const { addToast } = useToast();
-  const settings = useAppStore((state) => state.settings);
+  const settings = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    return activeId ? state.data[activeId]?.settings : { dailyGoal: 20 };
+  });
   const setDailyGoal = useAppStore((state) => state.setDailyGoal);
   const importState = useAppStore((state) => state.importState);
-  const exportState = useAppStore((state) => ({
-    version: state.version,
-    decks: state.decks,
-    cards: state.cards,
-    settings: state.settings,
-    dailyLogs: state.dailyLogs,
-  }));
+  const exportState = useAppStore((state) => {
+    const activeId = state.activeUserId;
+    const data = activeId ? state.data[activeId] : undefined;
+    return data
+      ? {
+          version: data.version,
+          decks: data.decks,
+          cards: data.cards,
+          settings: data.settings,
+          dailyLogs: data.dailyLogs,
+        }
+      : null;
+  });
   const fileRef = useRef<HTMLInputElement>(null);
   const [mode, setMode] = useState<"merge" | "replace">("merge");
 
   const handleExport = () => {
+    if (!exportState) return;
     const blob = new Blob([JSON.stringify(exportState, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
